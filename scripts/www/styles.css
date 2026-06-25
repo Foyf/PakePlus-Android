@@ -1,0 +1,184 @@
+/* ===== 全局 ===== */
+* { box-sizing: border-box; }
+body { background: #000; color: #e5e5e5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+
+/* ===== 滚动条 ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #1a1a1a; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #555; }
+
+/* ===== 侧边栏 ===== */
+#sidebar { width: 280px; }
+#sidebar.open { transform: translateX(0); }
+#sidebarOverlay.active { opacity: 1; pointer-events: auto; }
+
+/* ===== 对话消息 ===== */
+.message { 
+  display: flex; 
+  flex-direction: column; 
+  padding: 12px 16px; 
+  border-radius: 12px; 
+  max-width: 85%; 
+  animation: fadeIn 0.3s ease;
+}
+.message.user { background: #1a3a5c; align-self: flex-end; }
+.message.assistant { background: #1e1e1e; align-self: flex-start; border-left: 3px solid #3b82f6; }
+.message .role { font-size: 12px; color: #888; margin-bottom: 4px; }
+.message .content { white-space: pre-wrap; word-break: break-word; line-height: 1.6; }
+.message .content p { margin: 0 0 8px 0; }
+.message .content p:last-child { margin-bottom: 0; }
+.message .content code { background: #2a2a2a; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+.message .content pre { background: #1a1a1a; padding: 12px; border-radius: 8px; overflow-x: auto; }
+.message .token-info { font-size: 11px; color: #666; margin-top: 6px; }
+
+/* ===== 思考过程 ===== */
+.reasoning {
+  background: #1a1a2e;
+  border-left: 3px solid #8b5cf6;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #a78bfa;
+}
+.reasoning .label { font-size: 11px; color: #6d28d9; font-weight: 600; margin-bottom: 4px; }
+
+/* ===== 消息操作按钮 ===== */
+.message-actions { 
+  display: flex; 
+  gap: 8px; 
+  margin-top: 8px; 
+  opacity: 0; 
+  transition: opacity 0.2s;
+}
+.message:hover .message-actions { opacity: 1; }
+.message-actions button {
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+.message-actions button:hover { color: #fff; }
+.message-actions .edit-btn:hover { color: #60a5fa; }
+.message-actions .regenerate-btn:hover { color: #fbbf24; }
+.message-actions .copy-btn:hover { color: #34d399; }
+.message-actions .delete-btn:hover { color: #ef4444; }
+.message-actions .favorite-btn:hover { color: #fbbf24; }
+
+/* ===== 输入框 ===== */
+.input-container { background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); }
+#input { min-height: 44px; max-height: 150px; transition: border-color 0.2s; }
+#input:focus { border-color: #3b82f6; }
+
+/* ===== 聊天容器 ===== */
+#chat { display: flex; flex-direction: column; padding-bottom: 100px; }
+
+/* ===== 面板模态框 ===== */
+.panel-modal { background: rgba(0,0,0,0.9); }
+
+/* ===== 角色卡列表 ===== */
+.character-item {
+  background: #1a1a1a;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #2a2a2a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.character-item:hover { border-color: #3b82f6; }
+.character-item .name { color: #fff; font-weight: 500; }
+.character-item .summary { color: #888; font-size: 13px; }
+.character-item .actions button {
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.character-item .actions button:hover { color: #fff; }
+.character-item .actions .delete-char:hover { color: #ef4444; }
+
+/* ===== 指令列表 ===== */
+.prompt-item {
+  background: #1a1a1a;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #2a2a2a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.prompt-item .title { color: #fff; font-weight: 500; }
+.prompt-item .content { color: #888; font-size: 13px; }
+.prompt-item .actions button {
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.prompt-item .actions button:hover { color: #fff; }
+.prompt-item .actions .delete-prompt:hover { color: #ef4444; }
+
+/* ===== 收藏列表 ===== */
+.favorite-item {
+  background: #1a1a1a;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #2a2a2a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.favorite-item .text { color: #ddd; font-size: 14px; }
+.favorite-item .actions button {
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.favorite-item .actions button:hover { color: #ef4444; }
+
+/* ===== 存储用量 ===== */
+.storage-usage-bar {
+  font-size: 12px;
+  color: #666;
+  padding: 4px 0;
+  margin-bottom: 8px;
+}
+
+/* ===== 动画 ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.typing-indicator { display: inline-flex; gap: 4px; padding: 8px 0; }
+.typing-indicator span {
+  width: 8px; height: 8px; background: #666;
+  border-radius: 50%; animation: pulse 1.4s infinite;
+}
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+/* ===== 响应式 ===== */
+@media (max-width: 640px) {
+  .message { max-width: 92%; }
+  #sidebar { width: 260px; }
+}
